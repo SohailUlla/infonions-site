@@ -5,20 +5,23 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Infonions — Personalised data & vendor matching</title>
 
-  <!-- CORE STYLES (ensure this file exists at site/assets/style.css) -->
+  <!-- CORE STYLES -->
   <link rel="stylesheet" href="assets/style.css" />
 
-  <!-- favicon (located at site/favicon.png) -->
+  <!-- favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
 
-  <!-- Optional: Leaflet CSS (harmless if unused on this page) -->
+  <!-- Leaflet (optional) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- ✅ REQUIRED: Netlify Identity -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
+
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <div class="brand" onclick="goHome()" style="cursor:pointer;display:flex;align-items:center;gap:10px" role="button" aria-label="Go home">
-        <!-- logo.svg is at site/logo.svg (root) per your file tree -->
+      <div class="brand" onclick="goHome()" style="cursor:pointer;display:flex;align-items:center;gap:10px">
         <img src="assets/favicon.svg" alt="Infonions" class="logo" style="height:42px" />
         <div class="brand-text">
           <div class="brand-title">Infonions</div>
@@ -35,7 +38,7 @@
         <a href="contact.html" class="btn btn-primary">Get Help</a>
       </nav>
 
-      <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+      <button class="nav-toggle" id="navToggle">☰</button>
     </div>
   </header>
 
@@ -44,71 +47,27 @@
     <section class="hero">
       <div class="container hero-grid" style="grid-template-columns:1fr 420px">
         <div class="hero-left">
-          <h1 class="hero-title">A New Era Of Personalisation </h1>
-          <p class="hero-sub">Tell us what you need we’ll guide you with personalised advice, connect you to affordable vendors, and share clear rankings and ratings on living standards, jobs, and infrastructure across districts.</p>
+          <h1 class="hero-title">A New Era Of Personalisation</h1>
+          <p class="hero-sub">
+            Tell us what you need we’ll guide you with personalised advice, connect you to affordable vendors,
+            and share clear rankings across districts.
+          </p>
 
           <div class="hero-actions">
             <a class="btn btn-primary" href="reports.html">Explore Rankings</a>
             <a class="btn btn-ghost" href="about.html">How it works</a>
           </div>
-
-          <ul class="quick-stats" style="margin-top:18px;display:flex;gap:18px;list-style:none;padding:0">
-            <li><div class="badge">—</div><div class="muted small">District Scores</div></li>
-            <li><div class="badge">—</div><div class="muted small">Vendors</div></li>
-            <li><div class="badge">—</div><div class="muted small">Active Users</div></li>
-          </ul>
         </div>
 
         <aside class="card">
-          <h3 style="margin-top:0">Quick Consult</h3>
-          <p class="muted">Share your needs, and we’ll connect you with affordable and suitable options nearby.</p>
-
-          <form id="quickForm" class="quick-form" style="margin-top:12px">
-            <input id="q_need" placeholder="What do you need? e.g., affordable phone, skill training" />
-            <div style="display:flex;gap:8px;margin-top:8px">
-              <input id="q_budget" placeholder="Budget (₹)" style="flex:1" />
-              <input id="q_city" placeholder="City / District" style="flex:1" />
-            </div>
-
-            <div style="display:flex;gap:8px;margin-top:10px">
-              <button type="submit" class="btn btn-primary full">Find Matches</button>
-              <button type="button" id="saveProfile" class="btn btn-outline full">Save Profile</button>
-            </div>
-
-            <div style="margin-top:10px;font-size:13px;color:var(--muted)">
-              Your personal data stays private. Only anonymized and aggregated rankings are published.
-            </div>
+          <h3>Quick Consult</h3>
+          <form id="quickForm">
+            <input placeholder="What do you need?" />
+            <input placeholder="Budget (₹)" />
+            <input placeholder="City / District" />
+            <button class="btn btn-primary full">Find Matches</button>
           </form>
         </aside>
-      </div>
-    </section>
-
-    <!-- How it works (brief) -->
-    <section class="container how-section" style="padding-top:18px;padding-bottom:28px">
-      <h2 class="section-title">How Infonions works</h2>
-      <div class="grid-3" style="margin-top:12px">
-        <div class="card">
-          <h4>1. Collect</h4>
-          <p class="muted">Volunteers collect verified, consented data from households and vendors.</p>
-        </div>
-
-        <div class="card">
-          <h4>2. Validate</h4>
-          <p class="muted">We validate and anonymize data before aggregation.</p>
-        </div>
-
-        <div class="card">
-          <h4>3. Match</h4>
-          <p class="muted">We recommend vendors and services tailored to each user's needs and budget.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Featured reports -->
-    <section class="container" style="padding-bottom:40px">
-      <h2 class="section-title">Featured reports</h2>
-      <div class="grid-3" id="featuredReports" style="margin-top:12px">
-        <!-- populated by assets/script.js -->
       </div>
     </section>
   </main>
@@ -116,52 +75,54 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="footer-left">
-        <!-- small logo - ensure file exists at site/logo-sm.svg or use logo.svg as fallback -->
-        <img src="logo-sm.svg" alt="Infonions" class="logo-sm" style="height:28px" onerror="this.src='logo.svg'"/>
-        <div class="muted small">© <span id="year"></span> Infonions • Personal life consulting powered by real data</div>
-      </div>
-
-      <div class="footer-right">
-        <a class="muted" href="privacy.html">Privacy</a>
-        <a class="muted" href="sitemap.xml">Sitemap</a>
-        <a class="muted" href="contact.html">Contact</a>
+        <img src="logo-sm.svg" style="height:28px" onerror="this.src='logo.svg'"/>
+        <div class="muted small">
+          © <span id="year"></span> Infonions
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- CORE SCRIPT (ensure file exists at site/assets/script.js). Use defer so script runs after DOM parsing -->
+  <!-- CORE SCRIPT -->
   <script src="assets/script.js" defer></script>
 
-  <!-- Optional: Leaflet JS (harmless if unused on this page) -->
+  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 
-  <!-- Small inline fallback for basic nav toggle so page is usable even if script.js fails -->
+  <!-- ✅ NAV + YEAR -->
   <script>
-    (function(){
-      document.addEventListener('DOMContentLoaded', function(){
-        var toggle = document.getElementById('navToggle');
-        var nav = document.getElementById('mainNav');
-        toggle && toggle.addEventListener('click', function(){ nav && nav.classList.toggle('open'); });
-        // year fill
-        var y = new Date().getFullYear(); var el = document.getElementById('year'); if(el) el.textContent = y;
-        // goHome fallback
-        if(typeof goHome !== 'function'){
-          window.goHome = function(){ window.location.href = 'index.html'; };
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("year").textContent = new Date().getFullYear();
+      document.getElementById("navToggle")
+        ?.addEventListener("click", () =>
+          document.getElementById("mainNav").classList.toggle("open")
+        );
+    });
+  </script>
+
+  <!-- ✅ NETLIFY IDENTITY HANDLING (CRITICAL FIX) -->
+  <script>
+    if (window.netlifyIdentity) {
+
+      // Handle invite + recovery links
+      window.netlifyIdentity.on("init", user => {
+        const hash = window.location.hash;
+
+        if (hash.includes("invite_token") || hash.includes("recovery_token")) {
+          window.netlifyIdentity.open();
+        }
+
+        if (user) {
+          window.location.href = "/admin/";
         }
       });
-    })();
-      if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
+
+      // Redirect after login
+      window.netlifyIdentity.on("login", () => {
+        window.location.href = "/admin/";
+      });
+    }
   </script>
-  </body>
+
+</body>
 </html>
-
-
-
