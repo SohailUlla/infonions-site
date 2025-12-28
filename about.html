@@ -1,0 +1,204 @@
+<!-- about.html (patched) -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — Infonions</title>
+  <meta name="description" content="About Infonions — mission, vision, values and how we collect real India data to provide personalised solutions." />
+
+  <!-- favicon (root) -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- core stylesheet -->
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand" onclick="goHome()" style="cursor:pointer;display:flex;align-items:center;gap:10px" role="button" aria-label="Go home">
+        <!-- logo.svg is at site/logo.svg per your file tree -->
+        <img src="assets/favicon.svg" alt="Infonions" class="logo" style="height:42px" />
+        <div class="brand-text">
+          <div class="brand-title">Infonions</div>
+          <div class="brand-sub">Personalisation powered by Real India</div>
+        </div>
+      </div>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="#mission" class="nav-link">Mission</a>
+        <a href="#vision" class="nav-link">Vision</a>
+        <a href="#volunteers" class="nav-link">Volunteers</a>
+        <a href="contact.html" class="btn btn-primary">Partner</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="container hero" style="padding-top:36px;padding-bottom:18px">
+      <div class="hero-grid" style="grid-template-columns:1fr;gap:18px">
+        <div class="card">
+          <div style="display:flex;gap:16px;align-items:center">
+            <!-- Use logo.svg as a reliable image; fallback to inline placeholder if missing -->
+            <img src="assets/favicon.svg" alt="About" style="width:84px;height:84px;border-radius:12px;object-fit:cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2284%22 height=%2284%22><rect width=%2284%22 height=%2284%22 fill=%22%23e5e7eb%22/><text x=%2242%22 y=%2248%22 font-size=%2210%22 text-anchor=%22middle%22 fill=%22%236b7280%22>Image</text></svg>'" />
+            <div>
+              <h1 style="margin:0;font-size:22px">About Infonions</h1>
+              <p class="muted" style="margin-top:6px">We help people make confident and budget-friendly decisions by offering personalised guidance, trusted vendor connections, and easy-to-understand rankings and ratings across different locations. Our goal is to give every Indian clear options, honest comparisons, and practical support, so they can choose what works best for their needs without confusion or guesswork.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="mission">
+          <h2 class="section-title">Our Mission</h2>
+          <p class="muted">Our mission is to understand real living conditions across India and provide personalised, budget-friendly solutions that genuinely help people. We aim to publish transparent and reliable rankings and ratings that guide individuals, businesses, and governments to make informed, confident decisions.</p>
+        </div>
+
+        <div class="card" id="vision">
+          <h2 class="section-title">Our Vision</h2>
+          <p class="muted">Our vision is to empower every person in India with a personalised life roadmap built on accurate, ground-verified insights. We aim to create a future where individuals can make confident decisions, improve their quality of life, and access opportunities with clarity and trust.</p>
+          <ul style="margin-top:12px;color:var(--muted);list-style:disc;padding-left:18px">
+            <li>Personal consulting for everyday needs</li>
+            <li>Transparent district-wise rankings on living standards</li>
+            <li>Vendor matching that respects budgets and local context</li>
+            <li>Ethical, privacy-first data practices</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="container how-section">
+      <h2 class="section-title">Core Values</h2>
+      <div class="grid-3" style="margin-top:12px">
+        <div class="card">
+          <h3>Accuracy</h3>
+          <p class="muted">We ensure accuracy by validating every piece of information through trusted volunteers and multiple verification layers, giving you insights that truly reflect ground reality.</p>
+        </div>
+        <div class="card">
+          <h3>Privacy</h3>
+          <p class="muted">We follow strict user-first policies. Your personal information is always kept confidential, and only anonymized insights are shared to ensure your privacy and security at every step.</p>
+        </div>
+        <div class="card">
+          <h3>Affordability</h3>
+          <p class="muted">We focus on offering recommendations that are practical, accessible, and aligned with your budget—helping you choose the best solutions without overspending.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container vendors" style="padding-top:20px">
+      <h2 class="section-title">What We Do</h2>
+      <div class="grid-3" style="margin-top:12px">
+        <div class="card">
+          <h3>Ground Data Collection</h3>
+          <p class="muted">Our volunteer network gathers real household and vendor-level information including income patterns, local prices, services, infrastructure, and employment to reflect the actual conditions people experience on the ground.</p>
+        </div>
+        <div class="card">
+          <h3>Analysis & Scoring</h3>
+          <p class="muted">We standardize data, assign scores, and visualize key indicators—covering living standards, infrastructure, job access, and affordability at the district level.</p>
+        </div>
+        <div class="card">
+          <h3>Personalised Consulting</h3>
+          <p class="muted">We connect users with the right vendors and solutions that match their needs and budget, supported through chat, calls, and trusted local partners.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="volunteers" class="container how-section" style="padding-top:18px">
+      <h2 class="section-title">Volunteer Network & Field Verification</h2>
+      <div class="card" style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px">
+          <p class="muted">Our volunteer network is the backbone of Infonions. Volunteers collect verified, local data using simple mobile forms and small incentives. Data is cross-checked by supervisors before it becomes part of our analytics.</p>
+          <h4 style="margin-top:12px">Volunteer benefits</h4>
+          <ul class="muted" style="padding-left:18px">
+            <li>Small stipends for verified survey work</li>
+            <li>Certificates and training for community data collectors</li>
+            <li>Priority access to vendor partnerships in their area</li>
+          </ul>
+        </div>
+
+        <div style="width:320px">
+          <div class="card" style="padding:12px">
+            <h4 style="margin:0 0 8px 0">Join as a Volunteer</h4>
+            <p class="muted" style="margin-bottom:12px">Sign up, attend a short orientation and start collecting verified household & vendor data in your community.</p>
+            <a class="btn btn-primary" href="contact.html">Become a volunteer</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container how-section" style="padding-top:18px">
+      <h2 class="section-title">Team & Partners</h2>
+      <div class="card" style="display:flex;gap:14px;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <!-- team photo: use inline fallback if file missing -->
+          <img src="team-1.jpg" alt="Team" style="width:100%;height:160px;object-fit:cover;border-radius:8px" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22160%22><rect width=%22300%22 height=%22160%22 fill=%22%23efefef%22/><text x=%22150%22 y=%2285%22 font-size=%2214%22 text-anchor=%22middle%22 fill=%22%236b7280%22>Team image</text></svg>'" />
+          <div style="margin-top:8px;font-weight:700">Sohail Ulla</div>
+          <div class="muted" style="font-size:13px">Founder</div>
+        </div>
+
+        <div style="flex:1;min-width:220px">
+          <img src="team-2.jpg" alt="Partner" style="width:100%;height:160px;object-fit:cover;border-radius:8px" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22160%22><rect width=%22300%22 height=%22160%22 fill=%22%23efefef%22/><text x=%22150%22 y=%2285%22 font-size=%2214%22 text-anchor=%22middle%22 fill=%22%236b7280%22>Partner image</text></svg>'" />
+          <div style="margin-top:8px;font-weight:700">Partner</div>
+          <div class="muted" style="font-size:13px">Volunteer Program Lead</div>
+        </div>
+
+        <div style="flex:1;min-width:220px">
+          <img src="partner-placeholder.svg" alt="Partners" style="width:100%;height:160px;object-fit:contain;border-radius:8px" onerror="this.src='logo.svg'"/>
+          <div style="margin-top:8px;font-weight:700">Partner Organisations</div>
+          <div class="muted" style="font-size:13px">Local NGOs, training centres & vendors</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container cta" style="padding-top:18px;padding-bottom:40px">
+      <div class="cta-inner card">
+        <div>
+          <h3>Ready to start personalised, data-driven consulting?</h3>
+          <p class="muted">If you are a vendor, volunteer or partner. Let's work together to bring accurate data and better choices to real people.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="contact.html">Contact us</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <!-- use small logo if exists, fallback to logo.svg -->
+        <img src="assets/logo-sm.svg" alt="Infonions" class="logo-sm" style="height:28px" onerror="this.src='logo.svg'"/>
+        <div class="muted small">© <span id="year"></span> Infonions • Personal life consulting powered by real data</div>
+      </div>
+
+      <div class="footer-right">
+        <a class="muted" href="privacy.html">Privacy</a>
+        <a class="muted" href="sitemap.xml">Sitemap</a>
+        <a class="muted" href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- core script (defer so DOM is available) -->
+  <script src="assets/script.js" defer></script>
+
+  <!-- small inline fallback for nav toggle and year if script.js doesn't run -->
+  <script>
+    (function(){
+      document.addEventListener('DOMContentLoaded', function(){
+        var toggle = document.getElementById('navToggle');
+        var nav = document.getElementById('mainNav');
+        toggle && toggle.addEventListener('click', function(){ nav && nav.classList.toggle('open'); });
+        // year fill
+        var y = new Date().getFullYear(); var el = document.getElementById('year'); if(el) el.textContent = y;
+        // goHome fallback
+        if(typeof goHome !== 'function'){
+          window.goHome = function(){ window.location.href = 'index.html'; };
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

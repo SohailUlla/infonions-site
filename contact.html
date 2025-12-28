@@ -1,0 +1,203 @@
+<!-- contact.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Infonions</title>
+  <meta name="description" content="Contact Infonions for partnerships, vendor onboarding, volunteering or media enquiries. We're here to help." />
+  <link rel="icon" href="favicon.png" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand" onclick="goHome()">
+        <img src="assets/logo.svg" alt="Infonions" class="logo" />
+        <div class="brand-text">
+          <div class="brand-title">Infonions</div>
+          <div class="brand-sub">Personalisation powered by Real India</div>
+        </div>
+      </div>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="reports.html" class="nav-link">Reports</a>
+        <a href="providers.html" class="nav-link">Vendors</a>
+        <a href="contact.html" class="btn btn-primary">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid" style="grid-template-columns:1fr 420px">
+        <div>
+          <h1 class="hero-title">Get in touch with Infonions</h1>
+          <p class="hero-sub">Whether you're a user, vendor, volunteer, researcher or media partner — tell us how we can help. We respond to partnership requests and important enquiries within 3 business days.</p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#form">Send a message</a>
+            <a class="btn btn-ghost" href="#faq">FAQ</a>
+          </div>
+
+          <ul class="quick-stats" style="margin-top:20px">
+            <li><strong>Response</strong><span>Typically 1–3 business days</span></li>
+            <li><strong>Support</strong><span>vendor & volunteer helpdesk</span></li>
+            <li><strong>Headquarters</strong><span>Hyderabad, India</span></li>
+          </ul>
+        </div>
+
+        <aside class="card">
+          <h3 style="margin-top:0">Contact Options</h3>
+          <div style="margin-top:8px">
+            <div style="font-weight:700">General Enquiries</div>
+            <div class="muted" style="font-size:13px">hello@infonions.com</div>
+          </div>
+
+          <div style="margin-top:10px">
+            <div style="font-weight:700">Vendor / Partner</div>
+            <div class="muted" style="font-size:13px">partners@infonions.com</div>
+          </div>
+
+          <div style="margin-top:10px">
+            <div style="font-weight:700">Volunteer Program</div>
+            <div class="muted" style="font-size:13px">volunteers@infonions.com</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <a class="btn btn-outline" href="providers.html">Apply as partner</a>
+            <a class="btn btn-primary" href="#form" style="margin-left:8px">Contact support</a>
+          </div>
+
+          <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+            <strong>Office:</strong> SY No. X, Hyderabad • Office hours: Mon–Fri 10:00–18:00
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="form" class="container" style="padding-top:18px">
+      <div style="display:grid;grid-template-columns:1fr 380px;gap:18px">
+        <div class="card">
+          <h2 class="section-title">Send us a message</h2>
+          <p class="muted">Use the form below for queries, partnerships, volunteer signup or press. For urgent vendor support use partners@infonions.com</p>
+
+          <form id="contactForm" class="quick-form" style="margin-top:12px">
+            <input id="c_name" placeholder="Full name" required />
+            <input id="c_email" placeholder="Email address" type="email" required />
+            <input id="c_phone" placeholder="Phone (optional)" />
+            <select id="c_reason" style="padding:10px;border-radius:10px;border:1px solid #e6e9ef;margin-bottom:10px">
+              <option value="">Reason for contact</option>
+              <option value="general">General enquiry</option>
+              <option value="vendor">Vendor partnership</option>
+              <option value="volunteer">Volunteer signup</option>
+              <option value="media">Media & research</option>
+            </select>
+
+            <textarea id="c_message" placeholder="Write your message..." style="min-height:120px;padding:10px;border-radius:10px;border:1px solid #e6e9ef"></textarea>
+
+            <div class="row gap" style="margin-top:8px">
+              <button type="submit" class="btn btn-primary full">Send message</button>
+              <button type="button" id="contactReset" class="btn btn-outline full">Clear</button>
+            </div>
+
+            <div style="margin-top:8px;font-size:13px;color:var(--muted)">
+              By contacting us you agree to our <a href="privacy.html">privacy policy</a>. We will handle your data securely.
+            </div>
+          </form>
+        </div>
+
+        <aside class="card">
+          <h3 class="section-title">Map & Office</h3>
+          <div id="contactMap" style="background:linear-gradient(180deg,#eef2ff,#ffffff);height:220px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600">
+            Map placeholder — add interactive map later
+          </div>
+
+          <div style="margin-top:12px">
+            <h4 style="margin:0 0 6px 0">Follow us</h4>
+            <div style="display:flex;gap:8px;align-items:center">
+              <a class="btn btn-ghost" href="#" aria-label="Twitter">Twitter</a>
+              <a class="btn btn-ghost" href="#" aria-label="Instagram">Instagram</a>
+              <a class="btn btn-ghost" href="#" aria-label="YouTube">YouTube</a>
+              <a class="btn btn-ghost" href="#" aria-label="LinkedIn">LinkedIn</a>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <h4 style="margin:0 0 6px 0">Press kit</h4>
+            <a class="btn btn-outline" href="#" id="downloadPress">Download press kit</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="faq" class="container how-section" style="padding-top:18px;padding-bottom:40px">
+      <h2 class="section-title">FAQ</h2>
+      <div class="grid-3" style="margin-top:12px">
+        <div class="card">
+          <h4>How long until I receive a match?</h4>
+          <p class="muted">Matches typically arrive within 24–72 hours depending on complexity and verification needs.</p>
+        </div>
+
+        <div class="card">
+          <h4>Do you sell my personal data?</h4>
+          <p class="muted">No. We never sell identifiable personal data. We publish only anonymized, aggregated datasets and rankings.</p>
+        </div>
+
+        <div class="card">
+          <h4>Can vendors pay to appear higher?</h4>
+          <p class="muted">We prioritise verified quality and fair pricing. Paid promotions are clearly marked; core matches are driven by need, budget and service fit.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <img src="assets/logo-sm.svg" alt="Infonions" class="logo-sm" />
+        <div class="muted small">© <span id="year"></span> Infonions • Personal life consulting powered by real data</div>
+      </div>
+
+      <div class="footer-right">
+        <a class="muted" href="privacy.html">Privacy</a>
+        <a class="muted" href="sitemap.html">Sitemap</a>
+        <a class="muted" href="index.html">Home</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/script.js"></script>
+  <script>
+    // contact page — demo form behavior
+    document.addEventListener('DOMContentLoaded', () => {
+      const contactForm = document.getElementById('contactForm');
+      contactForm && contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('c_name').value.trim();
+        const email = document.getElementById('c_email').value.trim();
+        const reason = document.getElementById('c_reason').value || 'general';
+        const msg = document.getElementById('c_message').value.trim();
+        if (!name || !email || !msg) { alert('Please fill name, email and message.'); return; }
+
+        // demo: show summary and reset
+        alert('Thanks, ' + name + '! Your message has been received for: ' + reason + '. We will reply to ' + email + ' soon (demo).');
+        contactForm.reset();
+      });
+
+      document.getElementById('contactReset').addEventListener('click', () => {
+        document.getElementById('contactForm').reset();
+      });
+
+      document.getElementById('downloadPress').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Downloading press kit (demo). Replace with real ZIP/PDF link.');
+      });
+    });
+  </script>
+</body>
+</html>
