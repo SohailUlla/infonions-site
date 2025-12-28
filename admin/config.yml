@@ -6,18 +6,21 @@ media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 collections:
-
   - name: "wmi"
     label: "What's Moving India"
     folder: "content/wmi"
     create: true
-    slug: "{{slug}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Impact Level", name: "impact", widget: "select", options: ["High", "Medium", "Low"] }
       - { label: "Domain", name: "domain", widget: "select", options: ["Cost of Living", "Employment", "Healthcare", "Infrastructure", "Policy"] }
       - { label: "Summary", name: "summary", widget: "text" }
-      - { label: "Who Is Affected", name: "affected", widget: "list", field: { label: "Group", name: "group", widget: "string" } }
+      - label: "Who Is Affected"
+        name: "affected"
+        widget: "list"
+        fields:
+          - { label: "Group", name: "group", widget: "string" }
       - { label: "Full Article", name: "body", widget: "markdown" }
       - { label: "Language", name: "language", widget: "select", options: ["en", "te", "ta", "ml"] }
       - { label: "Publish Date", name: "date", widget: "datetime" }
