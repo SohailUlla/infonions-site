@@ -1,0 +1,8 @@
+<!-- assets/team-1.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="320" viewBox="0 0 600 320" role="img" aria-label="Team member 1">
+  <rect width="100%" height="100%" fill="#f3f4f6"></rect>
+  <circle cx="120" cy="120" r="72" fill="#c7d2fe"></circle>
+  <rect x="220" y="60" width="340" height="200" rx="12" fill="#fff"></rect>
+  <text x="120" y="206" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="700">Sohail Ulla</text>
+  <text x="120" y="232" font-size="12" text-anchor="middle" fill="#64748b">Founder</text>
+</svg>

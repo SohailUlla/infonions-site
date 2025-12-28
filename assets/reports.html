@@ -1,0 +1,366 @@
+<!-- reports.html — loads assets/india_districts_trimmed.geojson if present, fallback demo otherwise -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reports & Rankings — Infonions</title>
+  <meta name="description" content="District-level living scores, unemployment heatmaps and infrastructure indexes — explore interactive reports and download data." />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    #map { width:100%; height:420px; border-radius:10px; }
+    .legend { background:#fff;padding:8px;border-radius:8px;box-shadow:var(--shadow);font-size:13px;line-height:1.4 }
+    .top-item { padding:8px 6px;border-bottom:1px dashed rgba(15,23,42,0.04) }
+    .skeleton-map { height:420px;border-radius:10px;background:linear-gradient(90deg,#f3f4f6,#f8fafc,#f3f4f6); background-size:200% 100%; animation:skeletonShimmer 1.6s linear infinite }
+  </style>
+</head>
+<body>
+  <!-- header (same as before) -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand" onclick="goHome()">
+        <img src="assets/logo.svg" alt="Infonions" class="logo" />
+        <div class="brand-text">
+          <div class="brand-title">Infonions</div>
+          <div class="brand-sub">Personalisation powered by Real India</div>
+        </div>
+      </div>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="providers.html" class="nav-link">Vendors</a>
+        <a href="reports.html" class="nav-link">Reports</a>
+        <a href="contact.html" class="btn btn-primary">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid" style="grid-template-columns:1fr">
+        <div class="hero-left">
+          <h1 class="hero-title">District Rankings & Reports</h1>
+          <p class="hero-sub">Explore living standard scores, infrastructure index, unemployment heatmaps and downloadable district-level datasets.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#explorer">Explore Reports</a>
+            <a class="btn btn-ghost" href="#method">Methodology</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters (unchanged) -->
+    <section id="explorer" class="container" style="padding-top:18px">
+      <div class="card" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:180px">
+          <label class="muted">State</label>
+          <select id="filterState" style="padding:10px;border-radius:10px;border:1px solid #e6e9ef;width:100%">
+            <option value="">All states</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:180px">
+          <label class="muted">District</label>
+          <select id="filterDistrict" style="padding:10px;border-radius:10px;border:1px solid #e6e9ef;width:100%">
+            <option value="">All districts</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:180px">
+          <label class="muted">Metric</label>
+          <select id="filterMetric" style="padding:10px;border-radius:10px;border:1px solid #e6e9ef;width:100%">
+            <option value="living">Living Standard Score</option>
+            <option value="infrastructure">Infrastructure Index</option>
+            <option value="employment">Employment Index</option>
+            <option value="affordability">Affordability</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:180px">
+          <label class="muted">Year</label>
+          <select id="filterYear" style="padding:10px;border-radius:10px;border:1px solid #e6e9ef;width:100%">
+            <option>2025</option>
+            <option>2024</option>
+            <option>2023</option>
+          </select>
+        </div>
+        <div style="min-width:160px">
+          <label class="sr">Actions</label>
+          <div class="row" style="margin-top:6px">
+            <button id="applyFilters" class="btn btn-primary ripple">Apply</button>
+            <button id="resetFilters" class="btn btn-outline ripple">Reset</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Map + Top list -->
+    <section class="container" style="padding-top:18px">
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:18px">
+        <div class="card" style="min-height:420px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-weight:700">Interactive Map</div>
+            <div class="muted" style="font-size:13px">Choropleth by selected metric — click a district for details</div>
+          </div>
+
+          <div id="mapHolder" style="margin-top:12px">
+            <!-- skeleton shown while geojson loads -->
+            <div id="mapSkeleton" class="skeleton-map"></div>
+            <div id="map" style="display:none"></div>
+          </div>
+
+          <div id="districtDetail" style="margin-top:12px;display:none" class="info-box"></div>
+        </div>
+
+        <aside>
+          <div class="card" style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="font-weight:700">Top Districts</div>
+              <div id="legendHolder"></div>
+            </div>
+            <div id="topList" style="margin-top:10px"></div>
+            <div class="center" style="margin-top:12px">
+              <button id="downloadCSV" class="btn btn-ghost ripple">Download CSV</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="font-weight:700">Quick insights</div>
+            <ul style="padding-left:18px;color:var(--muted);margin-top:10px">
+              <li id="insight-1">Average living score (selected): —</li>
+              <li id="insight-2">Top improving district: —</li>
+              <li id="insight-3">Highest unemployment (selected): —</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- method + reports (unchanged) -->
+    <section class="container" style="padding-top:18px">
+      <h2 class="section-title">Recent Reports</h2>
+      <div class="grid-3" style="margin-top:12px" id="reportCards"></div>
+      <div class="center mt-12"><a class="btn btn-outline" href="reports.html">Browse all reports</a></div>
+    </section>
+
+    <section id="method" class="container how-section" style="padding-top:20px;padding-bottom:40px">
+      <h2 class="section-title">Methodology</h2>
+      <div class="card">
+        <p class="muted">Our scoring uses volunteer-collected indicators; indicators are normalized and aggregated into composite indices. Data is anonymized before publishing.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <img src="assets/logo-sm.svg" alt="Infonions" class="logo-sm" />
+        <div class="muted small">© <span id="year"></span> Infonions • Personal life consulting powered by real data</div>
+      </div>
+      <div class="footer-right">
+        <a class="muted" href="privacy.html">Privacy</a>
+        <a class="muted" href="sitemap.html">Sitemap</a>
+        <a class="muted" href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+  // reports.html — loads assets/india_districts_trimmed.geojson when available, else uses demo
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const geojsonUrl = 'assets/india_districts_trimmed.geojson';
+    const skeleton = document.getElementById('mapSkeleton');
+    const mapEl = document.getElementById('map');
+    let map, geojsonLayer;
+
+    // color scale
+    function colorForScore(v){
+      if (v >= 75) return '#16a34a';
+      if (v >= 60) return '#06b6d4';
+      if (v >= 50) return '#7c3aed';
+      if (v >= 40) return '#f59e0b';
+      return '#ef4444';
+    }
+
+    // create map only once
+    function initMap(){
+      if (map) return;
+      map = L.map('map', { zoomControl: true }).setView([22.0,79.0], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18, attribution: '© OpenStreetMap'}).addTo(map);
+    }
+
+    // fallback demo geojson (small)
+    const demoGeo = {
+      "type": "FeatureCollection","features":[
+        {"type":"Feature","properties":{"id":"HYD","name":"Hyderabad","state":"Telangana","living":62,"infrastructure":68,"employment":55,"affordability":60},"geometry":{"type":"Polygon","coordinates":[[[78.30,17.20],[78.70,17.20],[78.70,17.60],[78.30,17.60],[78.30,17.20]]]}},
+        {"type":"Feature","properties":{"id":"PTA","name":"Patna","state":"Bihar","living":41,"infrastructure":36,"employment":35,"affordability":42},"geometry":{"type":"Polygon","coordinates":[[[85.00,25.40],[85.30,25.40],[85.30,25.70],[85.00,25.70],[85.00,25.40]]]}},
+        {"type":"Feature","properties":{"id":"KLK","name":"Kolkata","state":"West Bengal","living":55,"infrastructure":58,"employment":50,"affordability":48},"geometry":{"type":"Polygon","coordinates":[[[88.20,22.45],[88.50,22.45],[88.50,22.70],[88.20,22.70],[88.20,22.45]]]}}
+      ]
+    };
+
+    // try to fetch the trimmed GeoJSON file
+    fetch(geojsonUrl).then(res => {
+      if (!res.ok) throw new Error('file not found');
+      return res.json();
+    }).then(gj => {
+      // hide skeleton, show map
+      skeleton.style.display = 'none';
+      mapEl.style.display = 'block';
+      initMap();
+      bindGeoJSON(gj);
+    }).catch(err => {
+      // fallback to demo geojson (file missing or fetch blocked)
+      console.warn('GeoJSON not found or failed to load — using demo data.', err);
+      skeleton.style.display = 'none';
+      mapEl.style.display = 'block';
+      initMap();
+      bindGeoJSON(demoGeo);
+    });
+
+    function bindGeoJSON(gj){
+      // store for later
+      const features = gj.features || [];
+      // create geojson layer with style and interactions, default metric 'living'
+      let activeMetric = 'living';
+      function styleFn(f){ return { fillColor: colorForScore(f.properties[activeMetric]||0), weight:1, color:'#fff', fillOpacity:0.95 }; }
+      geojsonLayer = L.geoJSON(gj, {
+        style: styleFn,
+        onEachFeature: function(feature, layer){
+          const p = feature.properties || {};
+          const popup = `<div style="font-weight:700">${p.name || '—'}</div><div style="font-size:13px;color:#6b7280;margin-top:6px">Living: ${p.living||'—'} • Infra: ${p.infrastructure||'—'} • Employ: ${p.employment||'—'}</div><div style="margin-top:8px"><button class="btn btn-primary ripple" onclick="openDistrict('${p.id}')">View details</button></div>`;
+          layer.bindPopup(popup,{minWidth:200});
+          layer.on({ mouseover(e){ e.target.openPopup(); e.target.setStyle({ weight:3, color:'#111' }) }, mouseout(e){ geojsonLayer.resetStyle(e.target) }, click(e){ e.target.openPopup(); showDetail(p); }});
+        }
+      }).addTo(map);
+      map.fitBounds(geojsonLayer.getBounds().pad(0.5));
+
+      // populate state dropdown & top list
+      populateStateDistricts(features);
+      populateTopList(features, 'living');
+
+      // wire filters
+      document.getElementById('applyFilters').addEventListener('click', ()=>{
+        const metric = document.getElementById('filterMetric').value;
+        const state = document.getElementById('filterState').value;
+        const districtId = document.getElementById('filterDistrict').value;
+        if (districtId){ openDistrict(districtId); return; }
+        // recolor by metric and optionally dim by state
+        geojsonLayer.eachLayer(layer=>{
+          const p = layer.feature.properties || {};
+          const val = p[metric] || 0;
+          layer.setStyle({ fillColor: colorForScore(val), opacity: (!state || p.state===state) ? 1:0.35, fillOpacity: (!state || p.state===state)?0.95:0.35 });
+        });
+        populateTopList(features, metric, state);
+      });
+
+      document.getElementById('resetFilters').addEventListener('click', ()=> {
+        document.getElementById('filterState').value = '';
+        document.getElementById('filterDistrict').innerHTML = '<option value=\"\">All districts</option>';
+        document.getElementById('filterMetric').value = 'living';
+        document.getElementById('filterYear').value = '2025';
+        geojsonLayer.eachLayer(layer => {
+          const p = layer.feature.properties || {};
+          layer.setStyle({ fillColor: colorForScore(p.living||0), opacity:1, fillOpacity:0.95 });
+        });
+        populateTopList(features, 'living');
+        document.getElementById('insight-1').textContent = 'Average living score (selected): —';
+        document.getElementById('insight-2').textContent = 'Top improving district: —';
+        document.getElementById('insight-3').textContent = 'Highest unemployment (selected): —';
+      });
+
+      // download CSV
+      document.getElementById('downloadCSV').addEventListener('click', ()=> {
+        const rows = ['District,State,Living,Infra,Employment,Affordability'];
+        features.forEach(f => { const p=f.properties||{}; rows.push(`${p.name||''},${p.state||''},${p.living||''},${p.infrastructure||''},${p.employment||''},${p.affordability||''}`) });
+        const csv = rows.join('\\n');
+        const blob = new Blob([csv], { type:'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href=url; a.download='infonions-ranking.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      });
+
+      // recent reports demo
+      const reportCards = document.getElementById('reportCards');
+      const reports = (features.slice(0,3).map((f,i)=> ({id:i+1,title: `${f.properties.name} — Snapshot 2025`, score: f.properties.living||0, file:'#'})));
+      reportCards.innerHTML = reports.map(r=>`<div class="card"><div style="font-weight:700">${r.title}</div><div style="margin-top:8px;color:var(--muted)">${r.score} / 100</div><div style="margin-top:10px"><a class="btn btn-ghost ripple" href="${r.file}">Download</a></div></div>`).join('');
+    }
+
+    // populate state dropdown & district select
+    function populateStateDistricts(features){
+      const states = Array.from(new Set(features.map(f=>f.properties.state).filter(Boolean))).sort();
+      const stateEl = document.getElementById('filterState');
+      states.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; stateEl.appendChild(o); });
+      stateEl.addEventListener('change', (e)=> {
+        const val = e.target.value;
+        const dEl = document.getElementById('filterDistrict');
+        dEl.innerHTML = '<option value=\"\">All districts</option>';
+        features.filter(f => !val || f.properties.state === val).forEach(f => { const o=document.createElement('option'); o.value=f.properties.id; o.textContent=f.properties.name; dEl.appendChild(o) });
+      });
+    }
+
+    // populate top list sorted by metric and optional state filter
+    function populateTopList(features, metric='living', stateFilter=''){
+      const filtered = features.filter(f => !stateFilter || f.properties.state === stateFilter);
+      const sorted = filtered.sort((a,b) => (b.properties[metric]||0) - (a.properties[metric]||0));
+      document.getElementById('topList').innerHTML = sorted.map((f,i)=>`<div class="top-item" onclick="openDistrict('${f.properties.id}')"><div style="font-weight:700">${i+1}. ${f.properties.name}</div><div style="color:${colorForScore(f.properties[metric]||0)};font-weight:700">${f.properties[metric]||0} / 100</div></div>`).join('');
+      const avg = (filtered.reduce((s,x)=> s + (x.properties[metric]||0), 0) / (filtered.length||1)).toFixed(1);
+      document.getElementById('insight-1').textContent = `Average ${metric} (selected): ${avg}`;
+      document.getElementById('insight-2').textContent = `Top improving district: ${sorted[0]?sorted[0].properties.name:'—'}`;
+      document.getElementById('insight-3').textContent = `Highest unemployment (selected): ${sorted[0]?sorted[0].properties.name:'—'}`;
+    }
+
+    // show details for clicked feature
+    window.openDistrict = function(id){
+      if (!geojsonLayer) return;
+      geojsonLayer.eachLayer(layer => {
+        const p = layer.feature.properties;
+        if (p.id === id){
+          layer.openPopup();
+          layer.setStyle({ weight:3, color:'#111' });
+          map.fitBounds(layer.getBounds().pad(0.6));
+          // show right panel
+          const panel = document.getElementById('districtDetail');
+          panel.style.display = 'block';
+          panel.innerHTML = `<div style="font-weight:700">${p.name} — ${p.state}</div>
+            <div style="margin-top:8px;color:var(--muted)">District ID: ${p.id}</div>
+            <div style="margin-top:8px">Living Score: <strong style="color:${colorForScore(p.living||0)}">${p.living||'—'}</strong></div>
+            <div style="margin-top:4px">Infrastructure: <strong>${p.infrastructure||'—'}</strong></div>
+            <div style="margin-top:4px">Employment: <strong>${p.employment||'—'}</strong></div>
+            <div style="margin-top:10px"><button class="btn btn-ghost ripple" onclick="zoomToFeature('${p.id}')">Zoom</button> <button class="btn btn-primary ripple" onclick="downloadFeatureReport('${p.id}')">Download</button></div>`;
+        } else {
+          geojsonLayer.resetStyle(layer);
+        }
+      });
+    };
+
+    window.zoomToFeature = function(id){
+      geojsonLayer.eachLayer(layer => {
+        if (layer.feature.properties.id === id){
+          map.setView(layer.getBounds().getCenter(), 10, { animate:true });
+          layer.openPopup();
+        }
+      });
+    };
+
+    window.downloadFeatureReport = function(id){
+      // CSV download of that district (demo)
+      const features = geojsonLayer.toGeoJSON().features;
+      const f = features.find(x => x.properties.id === id);
+      if (!f) return alert('Report not available (demo).');
+      const p = f.properties;
+      const csv = `District,State,Living,Infra,Employment,Affordability\n${p.name},${p.state},${p.living||''},${p.infrastructure||''},${p.employment||''},${p.affordability||''}\n`;
+      const blob = new Blob([csv], { type:'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `infonions-report-${p.id}.csv`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    };
+
+    // helper: show demo fallback when geojson not present (handled earlier)
+  });
+  </script>
+</body>
+</html>
