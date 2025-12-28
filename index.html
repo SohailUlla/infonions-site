@@ -133,7 +133,7 @@
   <script src="assets/script.js" defer></script>
 
   <!-- Optional: Leaflet JS (harmless if unused on this page) -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 
   <!-- Small inline fallback for basic nav toggle so page is usable even if script.js fails -->
   <script>
@@ -150,19 +150,9 @@
         }
       });
     })();
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
   </script>
   </body>
 </html>
-
 
 
 
