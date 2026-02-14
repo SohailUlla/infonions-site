@@ -679,15 +679,12 @@ p.muted, .muted { color: var(--muted); font-size:15px }
   max-width: 640px;
 }
 
-/* Article typography fix */
+/* FORCE article heading colors */
 .signal-summary h1,
 .signal-summary h2,
 .signal-summary h3,
 .signal-summary h4 {
-  color: #ffffff;
-  margin-top: 30px;
-  margin-bottom: 12px;
-  font-weight: 600;
+  color: #ffffff !important;
 }
 
 .signal-summary h2 {
@@ -696,24 +693,10 @@ p.muted, .muted { color: var(--muted); font-size:15px }
   padding-top: 20px;
 }
 
-.signal-summary h3 {
-  font-size: 22px;
-  color: #8fd3ff;
-}
-
 .signal-summary p {
-  color: #cfd8e3;
-  line-height: 1.7;
-  font-size: 16px;
+  color: #cfd8e3 !important;
 }
 
-.signal-summary ul {
-  margin-top: 10px;
-  padding-left: 20px;
-}
 
-.signal-summary li {
-  margin-bottom: 6px;
-}
 
 
