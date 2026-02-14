@@ -352,7 +352,9 @@ p.muted, .muted { color: var(--muted); font-size:15px }
   background: radial-gradient(circle, rgba(56,189,248,0.15), transparent 60%);
   opacity: 0;
   transition: opacity 0.4s ease;
+  pointer-events: none;   /* ADD THIS LINE */
 }
+
 
 .future-card:hover .card-glow {
   opacity: 1;
@@ -676,3 +678,4 @@ p.muted, .muted { color: var(--muted); font-size:15px }
   color: #cbd5f5;
   max-width: 640px;
 }
+
