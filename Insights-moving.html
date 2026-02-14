@@ -50,40 +50,7 @@
   </div>
 </section>
 
-<section class="signals-core">
-
-<article class="signal-card high">
-
-  <div class="signal-meta">
-    <span class="impact high">HIGH IMPACT</span>
-    <span class="domain">COST OF LIVING</span>
-  </div>
-
-  <span class="signal-label">SYSTEM PRESSURE</span>
-
-  <h2>
-    Why household expenses feel higher even when inflation slows
-  </h2>
-
-  <p class="signal-summary">
-    Official inflation numbers are cooling, but household budgets
-    continue to feel stretched due to uneven cost distribution
-    across essentials.
-  </p>
-
-  <div class="affected">
-    <span>Affects:</span>
-    <ul>
-      <li>Salaried middle class</li>
-      <li>Tier 2 & Tier 3 cities</li>
-      <li>Families with school-going children</li>
-    </ul>
-  </div>
-
-  <a href="Insight-article.html" class="read-brief">Read Brief →</a>
-</article>
-
-
+<section class="signals-core" id="wmiContainer">
 </section>
 
 <section class="signal-timeline">
@@ -103,6 +70,47 @@
   </p>
 </section>
 
+<script>
+async function loadArticle() {
+  const container = document.getElementById("wmiContainer");
+
+  const filePath = "content/wmi/2026-02-14-big-infrastructure-push-but-ground-reality-still-uneven.md";
+
+  const res = await fetch(filePath);
+  const text = await res.text();
+
+  const title = (text.match(/title:\s*(.*)/) || [])[1] || "Article";
+  const impact = (text.match(/impact:\s*(.*)/) || [])[1] || "Medium";
+  const domain = (text.match(/domain:\s*(.*)/) || [])[1] || "General";
+  const summary = (text.match(/summary:\s*([\s\S]*?)\n[A-Za-z]/) || [])[1] || "";
+
+  container.innerHTML = `
+    <article class="signal-card high">
+
+      <div class="signal-meta">
+        <span class="impact high">${impact.toUpperCase()} IMPACT</span>
+        <span class="domain">${domain.toUpperCase()}</span>
+      </div>
+
+      <span class="signal-label">SYSTEM SIGNAL</span>
+
+      <h2>${title}</h2>
+
+      <p class="signal-summary">
+        ${summary}
+      </p>
+
+      <a href="wmi-article.html?file=${filePath}" class="read-brief">
+        Read Brief →
+      </a>
+    </article>
+  `;
+}
+
+loadArticle();
+</script>
+
 <script src="assets/script.js"></script>
 </body>
 </html>
+
