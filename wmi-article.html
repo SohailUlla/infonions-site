@@ -4,27 +4,19 @@ function getQueryParam(name) {
   return url.searchParams.get(name);
 }
 
-function simpleMarkdownToHTML(md) {
-  return md
-    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-    .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
-    .replace(/^\- (.*$)/gim, '<li>$1</li>')
-    .replace(/\n{2,}/g, '</p><p>')
-    .replace(/^(?!<h|<li|<blockquote)(.+)$/gim, '<p>$1</p>');
-}
-
 async function loadFullArticle() {
-  let filePath = getQueryParam("file");
   const container = document.getElementById("articleContainer");
+
+  if (!container) {
+    console.error("Article container not found");
+    return;
+  }
+
+  const filePath = getQueryParam("file");
 
   if (!filePath) {
     container.innerHTML = "<p>Article not found.</p>";
     return;
-  }
-
-  if (!filePath.startsWith("/")) {
-    filePath = "/" + filePath;
   }
 
   try {
@@ -35,16 +27,10 @@ async function loadFullArticle() {
     const impact = (text.match(/impact:\s*(.*)/) || [])[1] || "Medium";
     const domain = (text.match(/domain:\s*(.*)/) || [])[1] || "General";
 
-    // Extract article body after first ## heading
-    const bodyStart = text.indexOf("##");
-    let body = bodyStart !== -1 ? text.substring(bodyStart) : "";
-
-    // Convert markdown to HTML
-    const htmlBody = simpleMarkdownToHTML(body);
+    const body = text.split("##")[1] || "Content not available.";
 
     container.innerHTML = `
       <article class="signal-card high">
-
         <div class="signal-meta">
           <span class="impact high">${impact.toUpperCase()} IMPACT</span>
           <span class="domain">${domain.toUpperCase()}</span>
@@ -52,16 +38,17 @@ async function loadFullArticle() {
 
         <h1>${title}</h1>
 
-        <div class="signal-summary">
-          ${htmlBody}
+        <div class="signal-summary" style="white-space: pre-line;">
+          ${body}
         </div>
-
       </article>
     `;
   } catch (err) {
-    container.innerHTML = "<p>Unable to load article.</p>";
+    container.innerHTML = "<p>Error loading article.</p>";
+    console.error(err);
   }
 }
 
-loadFullArticle();
+/* This ensures script runs AFTER page loads */
+window.addEventListener("DOMContentLoaded", loadFullArticle);
 </script>
