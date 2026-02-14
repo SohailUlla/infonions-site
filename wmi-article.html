@@ -5,7 +5,7 @@ function getQueryParam(name) {
 }
 
 async function loadFullArticle() {
-  const filePath = getQueryParam("file");
+  let filePath = getQueryParam("file");
   const container = document.getElementById("articleContainer");
 
   if (!filePath) {
@@ -13,37 +13,46 @@ async function loadFullArticle() {
     return;
   }
 
-  const res = await fetch(filePath);
-  const text = await res.text();
-
-  const title = (text.match(/title:\s*(.*)/) || [])[1] || "Article";
-  const impact = (text.match(/impact:\s*(.*)/) || [])[1] || "Medium";
-  const domain = (text.match(/domain:\s*(.*)/) || [])[1] || "General";
-
-  // Correct body extraction
-  let body = "";
-  const bodyMatch = text.match(/body:\s*\|\s*([\s\S]*)/);
-
-  if (bodyMatch) {
-    body = bodyMatch[1].trim();
+  // Ensure absolute path
+  if (!filePath.startsWith("/")) {
+    filePath = "/" + filePath;
   }
 
-  container.innerHTML = `
-    <article class="signal-card high">
+  try {
+    const res = await fetch(filePath);
+    const text = await res.text();
 
-      <div class="signal-meta">
-        <span class="impact high">${impact.toUpperCase()} IMPACT</span>
-        <span class="domain">${domain.toUpperCase()}</span>
-      </div>
+    const title = (text.match(/title:\s*(.*)/) || [])[1] || "Article";
+    const impact = (text.match(/impact:\s*(.*)/) || [])[1] || "Medium";
+    const domain = (text.match(/domain:\s*(.*)/) || [])[1] || "General";
 
-      <h1>${title}</h1>
+    // Get article body after frontmatter
+    const bodyStart = text.indexOf("##");
+    let body = "";
 
-      <div class="signal-summary" style="white-space: pre-line;">
-        ${body}
-      </div>
+    if (bodyStart !== -1) {
+      body = text.substring(bodyStart);
+    }
 
-    </article>
-  `;
+    container.innerHTML = `
+      <article class="signal-card high">
+
+        <div class="signal-meta">
+          <span class="impact high">${impact.toUpperCase()} IMPACT</span>
+          <span class="domain">${domain.toUpperCase()}</span>
+        </div>
+
+        <h1>${title}</h1>
+
+        <div class="signal-summary" style="white-space: pre-line;">
+          ${body}
+        </div>
+
+      </article>
+    `;
+  } catch (err) {
+    container.innerHTML = "<p>Unable to load article.</p>";
+  }
 }
 
 loadFullArticle();
