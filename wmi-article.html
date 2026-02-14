@@ -1,3 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Article | Infonions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section class="signals-core">
+  <div id="articleContainer" style="padding:40px; color:white;">
+    Loading article...
+  </div>
+</section>
+
+<section style="text-align:center; padding:40px;">
+  <a href="Insights-moving.html" class="btn btn-primary">
+    ← Back to What’s Moving India
+  </a>
+</section>
+
 <script>
 function getQueryParam(name) {
   const url = new URL(window.location.href);
@@ -5,14 +27,13 @@ function getQueryParam(name) {
 }
 
 async function loadFullArticle() {
+  const filePath = getQueryParam("file");
   const container = document.getElementById("articleContainer");
 
   if (!container) {
-    console.error("Article container not found");
+    console.error("Container missing");
     return;
   }
-
-  const filePath = getQueryParam("file");
 
   if (!filePath) {
     container.innerHTML = "<p>Article not found.</p>";
@@ -27,28 +48,37 @@ async function loadFullArticle() {
     const impact = (text.match(/impact:\s*(.*)/) || [])[1] || "Medium";
     const domain = (text.match(/domain:\s*(.*)/) || [])[1] || "General";
 
-    const body = text.split("##")[1] || "Content not available.";
+    let body = "";
+    const bodyMatch = text.match(/date:.*\n([\s\S]*)/);
+
+    if (bodyMatch) {
+      body = bodyMatch[1].trim();
+    }
 
     container.innerHTML = `
-      <article class="signal-card high">
+      <article class="signal-card high" style="padding:40px;">
+
         <div class="signal-meta">
           <span class="impact high">${impact.toUpperCase()} IMPACT</span>
           <span class="domain">${domain.toUpperCase()}</span>
         </div>
 
-        <h1>${title}</h1>
+        <h1 style="margin-top:20px;">${title}</h1>
 
-        <div class="signal-summary" style="white-space: pre-line;">
+        <div class="signal-summary" style="white-space: pre-line; margin-top:20px;">
           ${body}
         </div>
+
       </article>
     `;
   } catch (err) {
-    container.innerHTML = "<p>Error loading article.</p>";
+    container.innerHTML = "<p>Failed to load article.</p>";
     console.error(err);
   }
 }
 
-/* This ensures script runs AFTER page loads */
-window.addEventListener("DOMContentLoaded", loadFullArticle);
+loadFullArticle();
 </script>
+
+</body>
+</html>
