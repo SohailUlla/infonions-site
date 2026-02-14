@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Article | Infonions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section class="signals-core" id="articleContainer"></section>
+
+<section style="text-align:center; padding:40px;">
+  <a href="Insights-moving.html" class="btn btn-primary">
+    ← Back to What’s Moving India
+  </a>
+</section>
+
+<script>
+function getQueryParam(name) {
+  const url = new URL(window.location.href);
+  return url.searchParams.get(name);
+}
+
+async function loadFullArticle() {
+  const filePath = getQueryParam("file");
+  const container = document.getElementById("articleContainer");
+
+  if (!filePath) {
+    container.innerHTML = "<p>Article not found.</p>";
+    return;
+  }
+
+  const res = await fetch(filePath);
+  const text = await res.text();
+
+  const title = (text.match(/title:\s*(.*)/) || [])[1] || "Article";
+  const impact = (text.match(/impact:\s*(.*)/) || [])[1] || "Medium";
+  const domain = (text.match(/domain:\s*(.*)/) || [])[1] || "General";
+
+  const body = text.split("body:")[1] || "";
+
+  container.innerHTML = `
+    <article class="signal-card high">
+
+      <div class="signal-meta">
+        <span class="impact high">${impact.toUpperCase()} IMPACT</span>
+        <span class="domain">${domain.toUpperCase()}</span>
+      </div>
+
+      <h1>${title}</h1>
+
+      <div class="signal-summary" style="white-space: pre-line;">
+        ${body}
+      </div>
+
+    </article>
+  `;
+}
+
+loadFullArticle();
+</script>
+
+</body>
+</html>
