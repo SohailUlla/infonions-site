@@ -745,6 +745,10 @@ p.muted, .muted { color: var(--muted); font-size:15px }
   }
 }
 
+#adminLoginBtn {
+  display: none;
+}
+
 
 
 
